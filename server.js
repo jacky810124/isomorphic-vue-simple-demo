@@ -1,19 +1,12 @@
 const express = require('express')
 const fs = require('fs')
-const cookieParser = require('cookie-parser')
 const serialize = require('serialize-javascript')
 const path = require('path')
 const renderer = require('vue-server-renderer').createBundleRenderer(path.resolve(__dirname, './dist/vue-ssr-bundle.json'))
 const app = express()
 
-app.use(cookieParser())
 app.use(express.static('dist'))
 app.use(express.static('public'))
-
-/**
- * repo list
- */
-const repoDB = require('./db/github-repo.json')
 
 /**
  * render to string
@@ -33,40 +26,20 @@ const render = context => new Promise((resolve, reject) => {
 })
 
 /**
+ * repo list
+ */
+
+/**
  * repo api
  */
-// app.use('/api/repos', (req, res) => {
-//   const p = Number.parseInt(req.query.page, 10)
-//   const start = (p - 1) * 10
-//   const end = p * 10
-//   const data = repoDB.slice(start, end)
-//
-//   res.status(200).json({ data })
-// })
 
 /**
  * prepare data
  */
-const preFetchData = (req, res, next) => new Promise((resolve, reject) => {
-  resolve({
-    initialState: repoDB.slice(0, 10)
-  })
-})
 
 /**
  * GET /
  */
-// app.get('/', (req, res, next) => {
-//   preFetchData(req, res, next)
-//     .then(context => render(context))
-//     .then(result => {
-//       res.status(200).send(result)
-//     })
-//     .catch(error => {
-//       console.error(error)
-//       res.status(500).send(error)
-//     })
-// })
 
 app.listen(3002, () => {
   console.log('Server is listening at: http://localhost:3002')
