@@ -1,5 +1,6 @@
 <template lang="html">
-  <div>
+  <div class="container">
+    <h1>Github Repositories</h1>
   </div>
 </template>
 

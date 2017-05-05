@@ -1,5 +1,7 @@
 import { app } from './app'
 
-// app.repos = window.__INITIAL_STATE__
+if (window.__INITIAL_STATE__) {
+  app.repos = window.__INITIAL_STATE__
+}
 
 app.$mount('#app')
