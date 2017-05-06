@@ -28,18 +28,43 @@ const render = context => new Promise((resolve, reject) => {
 /**
  * repo list
  */
+const repoDB = require('./db/github-repo.json')
 
 /**
  * repo api
  */
+app.get('/api/repos/:page', (req, res) => {
+  const page = Number.parseInt(req.params.page, 10)
+
+  prepareData(page)
+    .then(data => {
+      res.json({ data })
+    })
+})
 
 /**
  * prepare data
  */
+const prepareData = (page) => {
+  return new Promise((resolve, reject) => {
+    const start = (page - 1) * 10
+    const end = page * 10
+    const data = repoDB.slice(start, end)
+
+    resolve(data)
+  })
+}
 
 /**
  * GET /
  */
+app.get('/repos', (req, res) => {
+  prepareData(1)
+    .then(data => render({ initialState: data }))
+    .then(html => {
+      res.send(html)
+    })
+})
 
 app.listen(3002, () => {
   console.log('Server is listening at: http://localhost:3002')
